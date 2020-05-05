@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+
+  echo:
+    build: .
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./:/go/src/echo
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    links:
+      - database
+    depends_on:
+      - database
+
+  database:
+    image: postgres
+    env_file:
+      - .env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
